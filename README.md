@@ -1,2 +1,27 @@
-# EmbediedSystemsCourse
-Information about the course of Embedied Systems for undergraduate students.
+# 《嵌入式系统》课程主页
+
+课程简介：安徽大学机器人工程专业本科选修课程
+
+授课教师：柳文章（教师主页：[https://ai.ahu.edu.cn/2025/0224/c19213a357831/page.htm](https://ai.ahu.edu.cn/2025/0224/c19213a357831/page.htm)）
+
+代码语言：C语言
+
+选用教材：《嵌入式系统原理及设计》——毕盛，张齐著，华南理工大学出版社
+
+教学芯片：STM32F103系列。
+
+## 课程大纲
+
+- 嵌入式系统概述
+- ARM芯片及体系架构
+- STM32微控制器及最小系统
+- STM32库函数及程序开发
+- GPIO接口
+- STM32中断
+- 串行通信
+- 定时器原理及应用
+- ADC原理及应用
+- DMA方式
+- 总线通信模式
+- 其他接口模式
+- 
