@@ -3,6 +3,7 @@
 .idea
 *.iml
 *.xml
+*.DS_Store
 
 # Object files
 *.o
