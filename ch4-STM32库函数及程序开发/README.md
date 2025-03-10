@@ -35,6 +35,10 @@ Contents:
 - 确保注册机中的``Target``选为'ARM'，点击``Generate``生成激活码，复制它；
 - 回到``Keil uVision5``软件，将刚刚复制好的激活码粘贴，点击``Add LIC``，完成激活。（记得恢复杀毒软件）
 
+```attention
+关于简体中文不能显示的问题：点击Edit->Configuration...->Editor->Encoding, 选择 Chiense GB2312 (Simplified)，点击 OK。
+```
+
 ### 第 3 步：安装STM32固件包
 
 首先，根据STM32微控制器系列型号选择固件包下载。
@@ -147,3 +151,38 @@ USER/
 
 ## 运行第一个程序（点亮LED灯）
 
+### 创建新工程
+
+按照前面的步骤，[新建一个工程](#新建工程)，例如可以命名为："LED"。
+
+### 编写main.c
+
+点亮LED灯需要用到GPIO模块，因此，我们需要导入与之相关的库函数：
+
+```c
+#include "stm32f10x.h"
+#include "stm32f10x_gpio.h"
+```
+
+接下来我们需要查看一下开发板上的LED小灯电路图，例如在本教学课程中，一共包含 LED0 和 LED1 两个小灯，分别和STM32芯片的 PB5 和 PE5 相连。引脚为高电平，LED小灯灭，引脚为低电平，LED小灯亮。
+
+以LED0小灯为例，将PB5引脚初始化。初始化程序如下：
+
+```c
+int main(void)
+{
+    GPIO_InitTypeDef gpio_init;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+    gpio_init.GPIO_Mode = GPIO_Mode_Out_PP;
+    gpio_init.GPIO_Pin = GPIO_Pin_5;
+    gpio_init.GPOI_Speed = GPOP_Speed_50MHz;
+    GPIO_Init(GPIOB, &gpio_init);
+    while(1)
+    {
+        GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+    }
+    return 0;
+}
+```
+
+接下来编译程序，下载至STM32微控制器内，点击开发板上的Reset按钮，观察小灯现象。
