@@ -4,6 +4,7 @@
 *.iml
 *.xml
 *.DS_Store
+/OBJ/*
 
 # Object files
 *.o
