@@ -114,7 +114,7 @@ USER/
 
 - 复制库文件：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/STM32F10x_StdPeriph_Driver/"，复制其中的``/inc``和``/src``两个文件夹，然后回到项目根目录下的``/STM32F10x_FWLIB``文件夹下，鼠标右击粘贴至此；
 - 复制核心文件：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/CMSIS/CM3/CoreSupport/"，复制其中的``core_cm3.c``和``core_cm3.h``两个文件夹，然后回到项目根目录下的``/CORE``文件夹下，鼠标右击粘贴至此；
-- 复制启动文件：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/arm/"，复制其中的``startup_stm32f10x_hd.s``（表示大容量，要根据具体型号选择对应的启动文件）启动文件，然后回到项目根目录下的``/CORE``文件夹下，鼠标右击粘贴至此；
+- 复制启动文件：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/arm/"，复制其中的``startup_stm32f10x_hd.s``（表示大容量，要根据具体型号选择对应的启动文件，[参考该链接](https://blog.csdn.net/AUST_xiaocizhen/article/details/136309026)）启动文件，然后回到项目根目录下的``/CORE``文件夹下，鼠标右击粘贴至此；
 - 复制主目录文件：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/"，复制其中的``stm32f10x.h``, ``system_stm32f10x.c``和``system_stm32f10x.h``三个文件，然后回到项目根目录下的``/USER``文件夹下，鼠标右击粘贴至此；
 - 找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Project/STM32F10x_StdPeriph_Template/"，复制其中的``main.c``, ``stm32f10x_conf.h``, ``stm32f10x_it.c``, ``stm32f10x_it.h``四个文件，然后回到项目根目录下的``/USER``文件夹下，鼠标右击粘贴至此。
 
