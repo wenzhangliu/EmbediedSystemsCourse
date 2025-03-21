@@ -273,7 +273,7 @@ GPIO_Init(GPIOE, &gpio_init_E);
 ```c
 void delay(u32 t)
 {
-	for(u32 i=0; i<t; i++){}
+    for(u32 i=0; i<t; i++){}
 }
 ```
 
