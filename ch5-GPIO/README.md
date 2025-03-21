@@ -152,11 +152,11 @@ void GPIO_Init(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct){}
 ```c
 void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 {
-  /* Check the parameters */
-  assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
-  assert_param(IS_GPIO_PIN(GPIO_Pin));
-  
-  GPIOx->BSRR = GPIO_Pin;
+    /* Check the parameters */
+    assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+    assert_param(IS_GPIO_PIN(GPIO_Pin));
+    
+    GPIOx->BSRR = GPIO_Pin;
 }
 ```
 
@@ -179,11 +179,11 @@ GPIO_SetBits(GPIOB, GPIO_Pin_1 | GPIO_Pin_15)
 ```c
 void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 {
-  /* Check the parameters */
-  assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
-  assert_param(IS_GPIO_PIN(GPIO_Pin));
-  
-  GPIOx->BRR = GPIO_Pin;
+    /* Check the parameters */
+    assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+    assert_param(IS_GPIO_PIN(GPIO_Pin));
+    
+    GPIOx->BRR = GPIO_Pin;
 }
 ```
 
@@ -206,21 +206,21 @@ GPIO_ResetBits(GPIOB, GPIO_Pin_1 | GPIO_Pin_15)
 ```c
 uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 {
-  uint8_t bitstatus = 0x00;
+    uint8_t bitstatus = 0x00;
   
-  /* Check the parameters */
-  assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
-  assert_param(IS_GET_GPIO_PIN(GPIO_Pin)); 
-  
-  if ((GPIOx->IDR & GPIO_Pin) != (uint32_t)Bit_RESET)
-  {
-    bitstatus = (uint8_t)Bit_SET;
-  }
-  else
-  {
-    bitstatus = (uint8_t)Bit_RESET;
-  }
-  return bitstatus;
+    /* Check the parameters */
+    assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+    assert_param(IS_GET_GPIO_PIN(GPIO_Pin)); 
+    
+    if ((GPIOx->IDR & GPIO_Pin) != (uint32_t)Bit_RESET)
+    {
+        bitstatus = (uint8_t)Bit_SET;
+    }
+    else
+    {
+        bitstatus = (uint8_t)Bit_RESET;
+    }
+    return bitstatus;
 }
 ```
 
@@ -254,18 +254,18 @@ ReadValue = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5)
 
 ```c
 // 配置PB口（输出）
-	GPIO_InitTypeDef gpio_init_B;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);  //使能PB时钟
-	gpio_init_B.GPIO_Mode = GPIO_Mode_Out_PP;  //推挽输出模式
-	gpio_init_B.GPIO_Pin = GPIO_Pin_5;
-	gpio_init_B.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOB, &gpio_init_B);
-	// 配置PE口（输出）
-	GPIO_InitTypeDef gpio_init_E;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE,ENABLE);  //使能PB时钟
-	gpio_init_E.GPIO_Mode = GPIO_Mode_IPU;  // 上拉输入模式
-	gpio_init_E.GPIO_Pin = GPIO_Pin_4;
-	GPIO_Init(GPIOE, &gpio_init_E);
+GPIO_InitTypeDef gpio_init_B;
+RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);  //使能PB时钟
+gpio_init_B.GPIO_Mode = GPIO_Mode_Out_PP;  //推挽输出模式
+gpio_init_B.GPIO_Pin = GPIO_Pin_5;
+gpio_init_B.GPIO_Speed = GPIO_Speed_50MHz;
+GPIO_Init(GPIOB, &gpio_init_B);
+// 配置PE口（输出）
+GPIO_InitTypeDef gpio_init_E;
+RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE,ENABLE);  //使能PB时钟
+gpio_init_E.GPIO_Mode = GPIO_Mode_IPU;  // 上拉输入模式
+gpio_init_E.GPIO_Pin = GPIO_Pin_4;
+GPIO_Init(GPIOE, &gpio_init_E);
 ```
 
 #### 3. 延时程序
@@ -280,25 +280,26 @@ void delay(u32 t)
 #### 4. 主循环
 
 ```c
-while(1){
-		// 循环检测按键
-		if(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4))
-		{
-			delay(1000);  // 调用延时程序，按键消抖
-			if(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4)==0)
-			{
-				key_value = !key_value;
-			}
-		}
-		if(key_value)
-		{
-			GPIO_SetBits(GPIOB, GPIO_Pin_5);
-		}
-		else
-		{
-			GPIO_ResetBits(GPIOB, GPIO_Pin_5);
-		}
-	}
+while(1)
+{
+    // 循环检测按键
+    if(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4))
+    {
+        delay(1000);  // 调用延时程序，按键消抖
+        if(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4)==0)
+        {
+            key_value = !key_value;
+        }
+    }
+    if(key_value)
+    {
+        GPIO_SetBits(GPIOB, GPIO_Pin_5);
+    }
+    else
+    {
+        GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+    }
+}
 ```
 
 ## 完整代码
