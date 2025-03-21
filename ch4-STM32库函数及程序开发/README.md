@@ -144,7 +144,15 @@ USER/
 - 点击``Select Folder for Objects...``，选择前面在项目根目录下创建的``/OBJ``文件夹。
 - 点击``C/C++``选项卡，选择``Include Paths``，将所有放了头文件的路径都包含进去，本例程包含：``/CORE``, ``/STM32F10x_FWLIB/inc/``, ``/USER``；
 - 添加宏定义：点击``C/C++``选项卡，在``Define``一栏输入字符串："STM32F10X_HD,USE_STDPERIPH_DRIVER"。
-- 点击编译（或重写main.c后编译）。
+- 点击编译（或重写main.c后编译）。main.c程序可重写如下：
+  ```c
+  #include "stm32f10x.h"
+  
+  int main(void)
+  {
+    return 0;
+  }
+  ```
 - 点击魔法棒，点击``Debug``选项卡，选择正确的下载调试工具，例如本课教学所用的为``ST-Link Debugger``，此外还要点击``Settings``选项卡，将``Target Com``下的``Port``选对，例如本科教学所用的开发板用的是"JTAG"端口，如果选错则无法下载程序。
 
 ### 步骤5：编译下载

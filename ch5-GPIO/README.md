@@ -76,34 +76,173 @@ GPIO寄存器功能表：
 
 GPIO库函数列表：
 
-| 函数名         | 描述 |
-|-------------|-----|
-| GPIO_DeInit |    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
-|GPIO_|    |
+| 函数名                    | 描述                                   |
+|------------------------|--------------------------------------|
+| GPIO_DeInit            | 将外设GPIOx寄存器重设为缺省值                    |
+| GPIO_AFIODeInit        | 将复用功能重设为缺省值                          |
+| GPIO_Init              | 根据GPIO_InitStruct中指定的参数初始化外设GPIOx寄存器 |
+| GPIO_StructInit        | 把GPIO——InitStruct中的每一个参数按缺省值填入       |
+| GPIO_ReadInputDataBit  | 读取指定端口管脚的输入                          |
+| GPIO_ReadInputData     | 读取指定的GPIO端口输入                        |
+| GPIO_ReadOutputDataBit | 读取指定端口管脚的输出                          |
+| GPIO_ReadOutputData    | 读取指定的GPIO端口输出                        |
+| GPIO_SetBits           | 设置指定的数据端口位                           |
+| GPIO_ResetBits         | 清除指定的数据端口位                           |
+| GPIO_WriteBit          | 设置或者清除指定的数据端口位                       |
+| GPIO_Write             | 向指定GPIO数据端口写入数据                      |
+| GPIO_PinLockConfig     | 锁定GPIO管脚设置寄存器                        |
+| GPIO_EventOutputConfig | 选择GPIO管脚用作事件输出                       |
+| GPIO_EventOutputCmd    | 使能或者失能事件输出                           |
+| GPIO_PinRemapConfig    | 改变指定引脚的映射                            |
+| GPIO_EXTILineConfig    | 选择GPIO管脚用作外部中断线路                     |
+
+#### 1. GPIO_Init函数
+
+```c
+void GPIO_Init(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct){}
+```
+
+参数说明：
+
+- ``GPIOx``: x可以是A、B、C、D或E，用于选择GPIO；
+- ``GPIO_InitStruc``: 指向结构体``GPIO_TypeDef``的指针，包含了外设GPIO的配置信息。
+- ``GPIO_TypeDef``结构体描述：
+  ```c
+    typedef struct
+    {
+      uint16_t GPIO_Pin;             /*!< Specifies the GPIO pins to be configured.
+                                          This parameter can be any value of @ref GPIO_pins_define */
+    
+      GPIOSpeed_TypeDef GPIO_Speed;  /*!< Specifies the speed for the selected pins.
+                                          This parameter can be a value of @ref GPIOSpeed_TypeDef */
+    
+      GPIOMode_TypeDef GPIO_Mode;    /*!< Specifies the operating mode for the selected pins.
+                                          This parameter can be a value of @ref GPIOMode_TypeDef */
+    }GPIO_InitTypeDef;
+  ```
+  - ``GPIO_Pin``：选择待设置的GPIO管脚，使用操作符‘|’可以一次设置多个管脚，也可以用官方定义好的``GPIO_Pin_x``来描述选中管脚x。
+  - ``GPIO_Speed``：设置选中管脚的速度，可选值：GPIO_Speed_10MHz、GPIO_Speed_2MHz、GPIO_Speed_50MHz。
+  - ``GPIO_Mode``：设置选中管脚的工作状态，可选值如下表所示：
+
+| GPIO_Mode             | 描述     |
+|-----------------------|--------|
+| GPIO_Mode_AIN         | 模拟输入   |
+| GPIO_Mode_IN_FLOATING | 浮空输入   |
+| GPIO_Mode_IPD         | 下拉输入   |
+| GPIO_Mode_IPU         | 上拉输入   |
+| GPIO_Mode_Out_OD      | 开漏输出   |
+| GPIO_Mode_Out_PP      | 推挽输出   |
+| GPIO_Mode_AF_OD       | 复用开漏输出 |
+| GPIO_Mode_AF_PP       | 复用推挽输出 |
+
+#### 2. GPIO_SetBits函数
+
+功能：设置输出引脚为高电平。
+
+源码：
+```c
+void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+{
+  /* Check the parameters */
+  assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+  assert_param(IS_GPIO_PIN(GPIO_Pin));
+  
+  GPIOx->BSRR = GPIO_Pin;
+}
+```
+
+参数说明：
+
+- ``GPIOx``：x可以是A、B、C、D或E，用于选择GPIO。
+- ``GPIO_Pin``: 选择待设置的GPIO管脚，使用操作符‘|’可以一次设置多个管脚，也可以用官方定义好的``GPIO_Pin_x``来描述选中管脚x。
+
+示例：设置GPIOB口的引脚1和引脚15（PB_1和PB_15）为高电平
+
+```c
+GPIO_SetBits(GPIOB, GPIO_Pin_1 | GPIO_Pin_15)
+```
+
+#### 3. GPIO_ResetBits函数
+
+功能：设置输出引脚为低电平。
+
+源码:
+```c
+void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+{
+  /* Check the parameters */
+  assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+  assert_param(IS_GPIO_PIN(GPIO_Pin));
+  
+  GPIOx->BRR = GPIO_Pin;
+}
+```
+
+参数说明：
+
+- ``GPIOx``：x可以是A、B、C、D或E，用于选择GPIO。
+- ``GPIO_Pin``: 选择待设置的GPIO管脚，使用操作符‘|’可以一次设置多个管脚，也可以用官方定义好的``GPIO_Pin_x``来描述选中管脚x。
+
+示例：设置GPIOB口的引脚1和引脚15（PB_1和PB_15）为低电平
+
+```c
+GPIO_ResetBits(GPIOB, GPIO_Pin_1 | GPIO_Pin_15)
+```
+
+#### 4. GPIO_ReadInputDataBit函数
+
+功能：读取指定端口具体引脚输入数据。
+
+源码：
+```c
+uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+{
+  uint8_t bitstatus = 0x00;
+  
+  /* Check the parameters */
+  assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+  assert_param(IS_GET_GPIO_PIN(GPIO_Pin)); 
+  
+  if ((GPIOx->IDR & GPIO_Pin) != (uint32_t)Bit_RESET)
+  {
+    bitstatus = (uint8_t)Bit_SET;
+  }
+  else
+  {
+    bitstatus = (uint8_t)Bit_RESET;
+  }
+  return bitstatus;
+}
+```
+
+参数说明：
+
+- ``GPIOx``：x可以是A、B、C、D或E，用于选择GPIO。
+- ``GPIO_Pin``: 待读取的端口位。
+
+示例：读取GPIOB引脚5（PB_5）的数值
+```c
+u8 ReadValue
+ReadValue = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5)
+```
 
 ## 案例：按键控制小灯
 
 ### 新建工程
 
+参考[第四章教程新建工程](https://github.com/wenzhangliu/EmbediedSystemsCourse/tree/main/ch4-STM32%E5%BA%93%E5%87%BD%E6%95%B0%E5%8F%8A%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91)（此处略）。
+
 ### 编写main.c
 
-### GPIO输入和输出配置
+#### 1. 导入库函数
 
-### 按键去抖
+```c
+#include "stm32f10x.h"
+#include "stm32f10x_gpio.h"
+```
 
-### 按键处理程序
+#### 2. 初始化程序
+
+```c
+GPIO_Init
+```
