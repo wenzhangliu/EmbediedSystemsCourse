@@ -291,3 +291,8 @@ while(1){
 		}
 	}
 ```
+
+完整演示代码：
+
+- [LED灯闪烁](https://github.com/wenzhangliu/EmbediedSystemsCourse/blob/main/ch5-GPIO/LED/USER/main.c)
+- [按键控制小灯](https://github.com/wenzhangliu/EmbediedSystemsCourse/blob/main/ch5-GPIO/LeyLED/USER/main.c)
