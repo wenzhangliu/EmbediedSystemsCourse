@@ -7,14 +7,23 @@
 
 目录索引:
 
-- GPIO结构及特点
-- GPIO寄存器和库函数
-- 案例：按键控制小灯
-    - 新建工程
-    - 编写主程序
-    - GPIO输入和输出配置
-    - 按键去抖
-    - 按键处理程序
+- [GPIO结构及特点](#gpio结构及特点)
+  - [GPIO功能模式](#gpio功能模式)
+  - [GPIO特点](#gpio特点)
+- [GPIO寄存器和库函数](#gpio寄存器和库函数)
+  - [GPIO寄存器](#gpio寄存器)
+  - [GPIO库函数](#gpio库函数)
+    - [1. GPIO_Init函数](#1-gpio_init函数)
+    - [2. GPIO_SetBits函数](#2-gpio_setbits函数)
+    - [3. GPIO_ResetBits函数](#3-gpio_resetbits函数)
+    - [4. GPIO_ReadInputDataBit](#4-gpio_readinputdatabit函数)
+- [案例：按键控制小灯](#案例按键控制小灯)
+    - [新建工程](#新建工程)
+      - [导入库函数](#1-导入库函数)
+      - [初始化程序](#2-初始化程序)
+      - [延时程序](#3-延时程序)
+      - [主循环](#4-主循环)
+- [完整代码](#完整代码)
 
 ## GPIO结构及特点
 
@@ -292,7 +301,7 @@ while(1){
 	}
 ```
 
-完整演示代码：
+## 完整代码
 
 - [LED灯闪烁](https://github.com/wenzhangliu/EmbediedSystemsCourse/blob/main/ch5-GPIO/LED/USER/main.c)
 - [按键控制小灯](https://github.com/wenzhangliu/EmbediedSystemsCourse/blob/main/ch5-GPIO/LeyLED/USER/main.c)
