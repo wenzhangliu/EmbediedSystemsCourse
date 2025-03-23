@@ -241,7 +241,7 @@ ReadValue = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5)
 
 ### 新建工程
 
-参考[第四章教程新建工程](https://github.com/wenzhangliu/EmbediedSystemsCourse/tree/main/ch4-STM32%E5%BA%93%E5%87%BD%E6%95%B0%E5%8F%8A%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91)（此处略）。
+参考[第四章教程新建工程](https://github.com/wenzhangliu/EmbediedSystemsCourse/tree/main/ch4-STM32-Start)（此处略）。
 
 ### 查看电路原理图
 
