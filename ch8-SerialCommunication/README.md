@@ -123,7 +123,72 @@ USART_InitTypeDef usart_init = {
 
 ### USART发送与接收
 
+STM32通过三个引脚建立通信：RX、TX、GND。
+
+USART串口通信模块一般分为三大部分：
+- 时钟发生器；
+- 数据发送器；
+- 数据接收器。
+
+#### 数据发送器
+
+- 当内核或DMA外设把数据写入发送数据寄存器（TDR）后，发送控制器自动地把数据加载到发送移位寄存器中，通过串口线TX把数据逐位送出去。
+- 当数据从TDR转移到移位寄存器时，会产生发送寄存器TDR已空时间TXE。
+- 当数据从移位寄存器全部发送出去时，会产生数据发送完成事件TC，这些事件可以在状态寄存器中查询得到。
+
+发送一个字节函数：
+```c
+void usart_send_byte(unsigned char data)
+{
+  USART_SendData(USART1, data);
+  while(!USART_GetFlagStatus(USART1, USART_FLAG_TC));  //等待数据发送完成
+}
+```
+
+#### 数据接收器
+
+- 接收数据是从串口线RX逐位输入到接收移位寄存器中；
+- 然后自动地转移到接收数据寄存器RDR；
+- 并会产生接收数据事件RXNE，表示数据已接收到。
+- 在查询到RXNE位置1后，把数据读取到内存中。
+
+接收一个字节函数：
+```c
+unsigned char usart_recv_byte(void)
+{
+  while(!USART_GetFlagStatus(USART, USART_FLAG_RXNE));  //查询是否接收到数据
+  return USART_ReceiveData(USART1);
+}
+```
+
+#### 波特率设置
+
+- 波特率：每秒传送二进制位数。
+- 单位：Bit/s。
+
+波特率是串行通信的重要指标，表示数据传输的速度。通过USART_BRR寄存器来设置，包括12位整数部分和4位小数部分。
+
+注意：接收器和发送器的波特率在USARTDIV的整数和小数寄存器中的值要设置为相同。
+
+波特率计算公式：
+
+$$\text{波特率}=\frac{f_{CK}}{16 \times USARTDIV}$$
+
+其中：
+- $f_{CK}$：外设时钟；
+- USARTDIV分为整数部分和小数部分：
+  - 整数部分：DIV_Mantissa（12位）
+  - 小数部分：DIV_Fraction（4位）
+
+例：
+USARTDIV=25.62：
+- 整数部分为25，即0x19，
+- 小数部分为0.62，16*0.62=9.92，最接近的整数为10，即0x0A，
+- 合在一起：USART_BRR=0x19A
+
 ### 硬件流控制
+
+
 
 ### 奇偶校验
 
