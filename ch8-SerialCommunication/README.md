@@ -41,11 +41,83 @@ USART 全称为“universal synchronous and asynchronous receiver-transmitter”
 
 STM32F103芯片有三组USART模块：USART1、USART2、USART3。
 
+USART I/O口说明表如下：
+
+| 端口     | 引脚         | I/O口 | 重映射口 | 功能说明         |
+|--------|------------|------|------|--------------|
+| USART1 | USART1_TX  | PA9  | PB6  | 发送数据输出       |
+|        | USART1_RX  | PA10 | PB7  | 接收数据输入       |
+|        | USART1_CTS | PA11 |      | 清除发送         |
+|        | USART1_RTS | PA12 |      | 发送请求         |
+|        | USART1_CK  | PA8  |      | 同步模式时，作为同步时钟 |
+| USART2 | USART2_TX  | PA2  | PD7  | 发送数据输出       |
+|        | USART2_RX  | PA3  | PD6  | 接收数据输入       |
+|        | USART2_CTS | PA0  | PD3  | 清除发送         |
+|        | USART2_RTS | PA1  | PD4  | 发送请求         |
+|        | USART2_CK  | PA4  | PD7  | 同步模式时，作为同步时钟 |
+| USART3 | USART3_TX  | PB10 | PD8  | 发送数据输出       |
+|        | USART3_RX  | PB11 | PD9  | 接收数据输入       |
+|        | USART3_CTS | PB13 | PD11 | 清除发送         |
+|        | USART3_RTS | PB14 | PD12 | 发送请求         |
+|        | USART3_CK  | PB12 | PD10 | 同步模式时，作为同步时钟 |
+
+#### 时钟管理
+
+为了使能USART模块的工作时钟，需要使能串口以及对应的引脚时钟，以USART1异步基本串行通信模式为例，时钟配置如下：
+
+```c
+RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO, ENABLE)
+```
+
+#### 中断源
+
+USART模块对应的中断函数：
+- ``void USART1_IRQHandler(void)``;
+- ``void USART2_IRQHandler(void)``;
+- ``void USART3_IRQHandler(void)``.
+这些函数名称不能改变，已经在启动文件中做了指定。
+
+有关USART的中断号需要在NVIC中断配置函数中指定，在``stm32f10x.h``头文件中，被设置为：``USART1_IRQn``, ``USART2_IRQn``, ``USART3_IRQn``。这些名称不能改变。
+
 ### USART帧格式
+
+起始位 + 数据帧 + 可能的奇偶校验位
+
+USART支持多种停止位的配置：
+- 1个停止位：停止位位数的默认值；
+- 2个停止位：可用于常规USART模式、单线模式以及调制解调器模式；
+- 0.5个停止位：在智能卡模式下接收数据时使用；
+- 1.5个停止位：在智能卡模式下发送和接收数据时使用。
 
 ### USART寄存器
 
 ### USART库函数
+
+库函数列表：
+
+| 函数名                 | 描述                 |
+|---------------------|--------------------|
+| USART_Init          | 初始化所使用的串口外设        |
+| USART_ITConfig      | 使能或者失能指定的USART中断   |
+| USART_SendData      | 通过外设USARTx发送单个数据   |
+| USART_ReceiveData   | 返回USARTx最近解释接收到的数据 |
+| USART_GetFlagStatus | 检查指定的USART标志位设置与否  |
+| USART_ClearFlag     | 清除USARTx的待处理标志位    |
+| USART_GetITStatus   | 检查指定的USART中断发生与否   |
+
+初始化示例：
+```c
+USART_InitTypeDef usart_init = {
+.USART_BaudRate = 9600,  // 波特率
+.USART_WordLength = USART_WorldLength_8b,  //数据位8位
+.USART_StopBits = USART_StopBits_1,  //1位停止位
+.USART_Parity = USART_Parity_No,  //无奇偶校验
+.USART_HardwareFlowControl = USART_HardwareFlowControl_None,  //无硬件流
+.USART_Mode = USART_Mode_Rx | USART_Mode_Tx,  //发送接收模式
+};
+.USART_Init(USART1, &usart_init);
+.USART_Cmd(USART1, ENABLE);
+```
 
 ## USART操作
 
