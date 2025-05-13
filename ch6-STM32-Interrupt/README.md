@@ -239,8 +239,6 @@ typedef struct
 
 配置GPIO端口的工作方式，配置GPIO和EXTI映射关系。
 
-
-
 #### 步骤2：中断处理
 
 配置EXTI触发条件，配置相应NVIC，根据中断编号对应到中断向量表查找中断服务函数``xxx_IRQHandler(void)``的入口地址（即函数指针）。
