@@ -88,18 +88,8 @@ int main(void){
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);  //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
 	led_init();
 	tim3_pwm_init(0, 899);  //不分频。PWM频率=72000000/900=80Khz
-	u16 pwm_value = 0;
-	u8 direction = 1;
-	while(1)
-	{	
-		for(u16 i=0; i< 20000; i++);
-		if(direction==1)pwm_value++;
-		else pwm_value--;
-		
-		if(pwm_value > 300)direction=0;
-		if(pwm_value == 0)direction=1;
-		
-		TIM_SetCompare2(TIM3, pwm_value);
-	}
+	u16 pwm_value =100;
+	TIM_SetCompare2(TIM3, pwm_value);
+	while(1);
 	return 0;
 }

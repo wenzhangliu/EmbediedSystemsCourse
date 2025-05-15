@@ -2,6 +2,11 @@
 #include "stm32f10x_tim.h"
 #include "stm32f10x_gpio.h"
 
+void delay(u32 t)
+{
+	for(u32 i=0; i<t; i++){}
+}
+
 void tim3_pwm_init(u16 prescaler, u16 period)  // 时钟2配置程序
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -73,6 +78,28 @@ u8 led_dark(void)
 		return 0;}  //返回值为0表示LED已经为熄灭状态。
 }
 
+void key_init(void)
+{
+	GPIO_InitTypeDef gpio_init_E;
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE,ENABLE);  //使能PE时钟
+	gpio_init_E.GPIO_Mode = GPIO_Mode_IPU;  // 上拉输入模式
+	gpio_init_E.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4;
+	GPIO_Init(GPIOE, &gpio_init_E);
+}
+
+char key_press(void)
+{
+	if(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == 0)
+	{
+		delay(1000);
+		if(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == 0)
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
 void TIM3_IRQHandler(void)   //TIM3中断
 {
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
@@ -87,19 +114,25 @@ void TIM3_IRQHandler(void)   //TIM3中断
 int main(void){
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);  //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
 	led_init();
+	key_init();
 	tim3_pwm_init(0, 899);  //不分频。PWM频率=72000000/900=80Khz
-	u16 pwm_value = 0;
-	u8 direction = 1;
+	u16 pwm_value = 899;
+	TIM_SetCompare2(TIM3, pwm_value);
+	u8 lightness_mode = 0;
 	while(1)
 	{	
-		for(u16 i=0; i< 20000; i++);
-		if(direction==1)pwm_value++;
-		else pwm_value--;
-		
-		if(pwm_value > 300)direction=0;
-		if(pwm_value == 0)direction=1;
-		
-		TIM_SetCompare2(TIM3, pwm_value);
+		if(key_press()){
+			lightness_mode = (lightness_mode + 1) % 5;
+			switch(lightness_mode){
+				case 0: pwm_value = 899; break;
+				case 1: pwm_value = 600; break;
+				case 2: pwm_value = 300; break;
+				case 3: pwm_value = 50; break;
+				case 4: pwm_value = 0; break;
+			}
+			TIM_SetCompare2(TIM3, pwm_value);
+			while(key_press());
+		}
 	}
 	return 0;
 }

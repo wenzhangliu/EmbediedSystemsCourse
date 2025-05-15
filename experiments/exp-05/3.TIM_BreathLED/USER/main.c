@@ -96,7 +96,7 @@ int main(void){
 		if(direction==1)pwm_value++;
 		else pwm_value--;
 		
-		if(pwm_value > 300)direction=0;
+		if(pwm_value > 400)direction=0;
 		if(pwm_value == 0)direction=1;
 		
 		TIM_SetCompare2(TIM3, pwm_value);

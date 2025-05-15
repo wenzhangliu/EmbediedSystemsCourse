@@ -13,14 +13,6 @@ void delay(u32 t)
 static void exti_init(void)  // 配置外部中断
 {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);  // 使能AFIO时钟
-	EXTI_InitTypeDef exti_init_PE3;
-	exti_init_PE3.EXTI_Line = EXTI_Line3;  // 按键连接PE3引脚，外部中断线3
-	exti_init_PE3.EXTI_LineCmd = ENABLE;   // 外部中断使能
-	exti_init_PE3.EXTI_Mode = EXTI_Mode_Interrupt;  // 外部中断模式
-	exti_init_PE3.EXTI_Trigger = EXTI_Trigger_Falling;  //下降沿触发中断
-	EXTI_Init(&exti_init_PE3);
-	GPIO_EXTILineConfig(GPIO_PortSourceGPIOE, GPIO_PinSource3);  //配置连接引脚PE3
-	
 	EXTI_InitTypeDef exti_init_PE4;
 	exti_init_PE4.EXTI_Line = EXTI_Line4;  // 按键连接PE4引脚，外部中断线4
 	exti_init_PE4.EXTI_LineCmd = ENABLE;   // 外部中断使能
@@ -32,14 +24,6 @@ static void exti_init(void)  // 配置外部中断
 
 static void nvic_init(void)  //配置中断
 {
-	NVIC_InitTypeDef nvic_init_PE3;
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);  //配置中断组别0
-	nvic_init_PE3.NVIC_IRQChannel = EXTI3_IRQn;  // 外部3中断
-	nvic_init_PE3.NVIC_IRQChannelCmd = ENABLE;  // 中断使能
-	nvic_init_PE3.NVIC_IRQChannelPreemptionPriority = 1;  // 抢占优先级2
-	nvic_init_PE3.NVIC_IRQChannelSubPriority = 1;  // 响应优先级2
-	NVIC_Init(&nvic_init_PE3);
-	
 	NVIC_InitTypeDef nvic_init_PE4;
 	nvic_init_PE4.NVIC_IRQChannel = EXTI4_IRQn;  // 外部4中断
 	nvic_init_PE4.NVIC_IRQChannelCmd = ENABLE;  // 中断使能
@@ -58,14 +42,22 @@ void led_init(void)
 	GPIO_Init(GPIOB, &gpio_init_B);
 }
 
-void led_light(void)
+u8 led_light(void)
 {
-	GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+	if(GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_5) == 1){  //如果LED是熄灭状态，则点亮。
+		GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+		return 1;}  //返回值为1表示LED由熄灭状态被点亮。
+	else{
+		return 0;}  //返回值为0表示LED已经为点亮状态。
 }
 
-void led_dark(void)
+u8 led_dark(void)
 {
-	GPIO_SetBits(GPIOB, GPIO_Pin_5);
+	if(GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_5) == 0){  //如果LED是点亮状态，则熄灭。
+		GPIO_SetBits(GPIOB, GPIO_Pin_5);
+		return 1;}  //返回值为1表示LED由点亮状态被成功熄灭。
+	else{
+		return 0;}  //返回值为0表示LED已经为熄灭状态。
 }
 
 void key_init(void)
@@ -94,19 +86,16 @@ void EXTI4_IRQHandler(void)
 {
 	if(key_press() == 1)
 	{
-		led_light();
+		if(!led_light()){  //小灯状态翻转一次
+			led_dark();
+		}
+		while(key_press());
 	}
 	else
 	{
 		led_dark();
 	}
 	EXTI_ClearITPendingBit(EXTI_Line4);
-}
-
-void EXTI3_IRQHandler(void)
-{
-	led_dark();
-	EXTI_ClearITPendingBit(EXTI_Line3);
 }
 
 int main(void){

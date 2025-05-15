@@ -33,7 +33,7 @@ void usart_init(void){
 
 void usart_send_byte(unsigned char data){
 	USART_SendData(USART1, data);  // 发送数据
-	while(!USART_GetFlagStatus(USART1, USART_FLAG_TC));  // 等待数据发送完成
+	while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);  // 等待数据发送完成
 }
 
 unsigned char usart_recv_byte(void){

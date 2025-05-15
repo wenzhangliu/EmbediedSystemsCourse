@@ -13,6 +13,7 @@ void delay(u32 t)
 static void exti_init(void)  // 配置外部中断
 {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);  // 使能AFIO时钟
+	
 	EXTI_InitTypeDef exti_init_PE4;
 	exti_init_PE4.EXTI_Line = EXTI_Line4;  // 按键连接PE4引脚，外部中断线4
 	exti_init_PE4.EXTI_LineCmd = ENABLE;   // 外部中断使能
@@ -25,7 +26,6 @@ static void exti_init(void)  // 配置外部中断
 static void nvic_init(void)  //配置中断
 {
 	NVIC_InitTypeDef nvic_init_PE4;
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);  //配置中断组别0
 	nvic_init_PE4.NVIC_IRQChannel = EXTI4_IRQn;  // 外部4中断
 	nvic_init_PE4.NVIC_IRQChannelCmd = ENABLE;  // 中断使能
 	nvic_init_PE4.NVIC_IRQChannelPreemptionPriority = 1;  // 抢占优先级1
@@ -58,7 +58,7 @@ void key_init(void)
 	GPIO_InitTypeDef gpio_init_E;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE,ENABLE);  //使能PE时钟
 	gpio_init_E.GPIO_Mode = GPIO_Mode_IPU;  // 上拉输入模式
-	gpio_init_E.GPIO_Pin = GPIO_Pin_4;
+	gpio_init_E.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4;
 	GPIO_Init(GPIOE, &gpio_init_E);
 }
 

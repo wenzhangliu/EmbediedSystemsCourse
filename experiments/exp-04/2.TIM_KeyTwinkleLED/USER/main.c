@@ -2,6 +2,11 @@
 #include "stm32f10x_tim.h"
 #include "stm32f10x_gpio.h"
 
+void delay(u32 t)
+{
+	for(u32 i=0; i<t; i++){}
+}
+
 void tim2_init(u16 prescaler, u16 period)  // 时钟2配置程序
 {
 	TIM_TimeBaseInitTypeDef tim_base_init;
@@ -58,6 +63,28 @@ u8 led_dark(void)
 		return 0;}  //返回值为0表示LED已经为熄灭状态。
 }
 
+void key_init(void)
+{
+	GPIO_InitTypeDef gpio_init_E;
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE,ENABLE);  //使能PE时钟
+	gpio_init_E.GPIO_Mode = GPIO_Mode_IPU;  // 上拉输入模式
+	gpio_init_E.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4;
+	GPIO_Init(GPIOE, &gpio_init_E);
+}
+
+char key_press(void)
+{
+	if(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == 0)
+	{
+		delay(1000);
+		if(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == 0)
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
 void TIM2_IRQHandler(void)  //中断服务程序
 {
 	if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET){
@@ -70,9 +97,24 @@ void TIM2_IRQHandler(void)  //中断服务程序
 
 int main(void){
 	led_init();
+	key_init();
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	tim2_init(7200, 5000);  //定时0.5秒。
+	u16 blink_interval = 5000; // 5000表示0.5s
+	tim2_init(7200, blink_interval);
 	led_light();
-	while(1){}
+	u8 speed_mode = 0;
+	while(1){
+		if(key_press()){
+			speed_mode = (speed_mode + 1) % 3;
+			switch(speed_mode){
+				case 0: blink_interval = 5000; break;
+				case 1: blink_interval = 2500; break;
+				case 2: blink_interval = 1000; break;
+			}
+			// 设置新的ARR值
+			TIM2->ARR = blink_interval - 1;
+			while(key_press());
+		}
+	}
 	return 0;
 }
