@@ -45,3 +45,4 @@
 - 没有开发板的同学，在笔记本电脑上自行安装 Proteus 仿真软件（[参考](https://blog.csdn.net/qq_29734297/article/details/122432150)）。（可行，但不推荐）
 
 - 有开发板的同学，需要按照理论课所述要求，自行安装Keil、驱动等软件开发环境。（[参考这里](https://github.com/wenzhangliu/EmbediedSystemsCourse/tree/main/ch4-STM32-Start)）
+
