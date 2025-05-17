@@ -46,3 +46,5 @@
 
 - 有开发板的同学，需要按照理论课所述要求，自行安装Keil、驱动等软件开发环境。（[参考这里](https://github.com/wenzhangliu/EmbediedSystemsCourse/tree/main/ch4-STM32-Start)）
 
+- 可2-3人一组合作完成实验，但是实验报告需要每位同学独立完成。（禁止抄袭，一旦发现，双方作业均为无效）
+
