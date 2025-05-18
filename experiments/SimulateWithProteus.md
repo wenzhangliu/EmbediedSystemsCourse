@@ -54,7 +54,8 @@ Proteus是一款部分功能免费的软件，可免费获取，但是高阶功�
   - 勾选``Create Quick Start Files``，点击"Next";
   - 点击``Finish``完成工程创建。
 - 进入``Schematic Capture``窗口，出现芯片原理图。
-- 搭建最小系统电路：包含晶振、电源、LED等，[参考这里](https://zhuanlan.zhihu.com/p/5403780335)，（注意引脚选择）。
+- 搭建最小系统电路：包含晶振、电源等，[参考这里](https://zhuanlan.zhihu.com/p/5403780335)，（注意引脚选择）。
+- 搭建满足当前实验要求的外围电路，如LED灯、按键等。
 - 利用[Keil编程](https://github.com/wenzhangliu/EmbediedSystemsCourse/tree/main/ch4-STM32-Start)，生成HEX文件;
 - 将生成的HEX文件添加到STM32芯片上：
   - 进入Proteus软件，双击芯片原理图；
@@ -63,4 +64,4 @@ Proteus是一款部分功能免费的软件，可免费获取，但是高阶功�
   - 点击``确定``。
 - 点击左下角``Run``图标，运行程序。
 - 观察芯片引脚，如果出现预期效果，说明仿真成功。
-- 
+
