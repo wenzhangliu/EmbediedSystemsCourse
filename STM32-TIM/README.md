@@ -228,9 +228,27 @@ typedef struct
 
 对内部时钟源进行计数，实现较为精确的计时。
 
+定时计算公式：
+
+$$
+定时时间 = period / 计数器频率 = prescaler * period / 72MHz
+$$
+
+其中，period是预分频系数；period是自动重装载寄存器周期的值（定时时间），累计period次产生一次中断。
+
+```note
+思考为什么是72MHz？
+
+因为外部晶振是8MHz，在文件``system_stm32f10x.c``文件中设置了锁相环（PLL）倍频系数为9，因此系统时钟频率是72MHz。在该文件中也定义了
+
+#define SYSCLK_FREQ_72MHz  72000000
+
+所以，如果外部晶振是其他频率，则需要通过计算设置合理的PLL倍频系数以及系统时钟频率。
+```
+
 案例：利用定时器实现1秒延迟，实现小灯闪烁。
 
-（见本目录下示例代码）
+（见本目录下示例代码：[小灯闪烁代码](https://github.com/wenzhangliu/EmbediedSystemsCourse/tree/main/STM32-TIM/TIM_TwinkleLED)）
 
 ### 计数器功能
 
@@ -358,3 +376,8 @@ IWDT适用于那些需要看门狗作为一个在主程序之外能够完全独�
 
 RTC内部维持了一个独立的定时器，通过配置，可以准确地每秒钟中断一次，也可以提供时钟日历的功能。
 
+## 完整代码：
+
+- [LED精准闪烁](https://github.com/wenzhangliu/EmbediedSystemsCourse/blob/main/STM32-TIM/TIM_TwinkleLED/USER/main.c)
+
+- [LED呼吸灯](https://github.com/wenzhangliu/EmbediedSystemsCourse/blob/main/STM32-TIM/TIM_BreathLED/USER/main.c)
