@@ -14,6 +14,12 @@
 
 ## 开发环境安装
 
+```attention
+以下教程中所涉及软件，可以从百度网盘下载: 
+
+链接: https://pan.baidu.com/s/1sUlkiBl-Y1GL_s81RcZ1nw 提取码: e44x。
+```
+
 ### 第 1 步：安装MDK
 
 官网最新版下载链接：[https://www.keil.com/download/product/](https://www.keil.com/download/product/)
@@ -21,22 +27,22 @@
 历史版本下载链接：[https://www.keil.com/update/rvmdk.asp](https://www.keil.com/update/rvmdk.asp)
 
 ```attention
-注意：下载官方最新版在安装过程中可能会遇到各种问题，建议安装旧版更加稳定，如MDK527.
+注意：下载官方最新版在安装过程中可能会遇到各种问题，建议安装旧版更加稳定，如MDK527。 如果网速慢，可以从百度网盘下载。
 ```
 
 安装结束后，会提示安装Packs（固件包）。该窗口可直接关闭，也可等待下载结束再关闭。
 （本课程所涉及的固件包在下一步单独安装）
 
-安装结束后，桌面会出现一个``Keil uVision5``的图标，即表示安装成功。
+完成安装后，桌面会出现一个``Keil uVision5``的图标，即表示安装成功。
 
 ### 第 2 步：激活 Keil uVision5
 
 安装成功后的``Keil uVision5``只支持试用，需要激活才能长时间使用。
 
-- 首先在网上搜“Keil5注册机下载“，随便找一个下载下来；
+- 首先在网上搜“Keil5注册机下载”，随便找一个下载下来（或者从[百度网盘下载](https://pan.baidu.com/s/1sUlkiBl-Y1GL_s81RcZ1nw)，提取码：e44x）；
 - 暂时关闭电脑杀毒软件，以管理员身份打开``Keil uVision5``；
 - 点击``file``->``License Management``，复制``Computer ID（CID）``；
-- 找到“Keil5“注册机，右击管理员身份打开，将复制好的CID粘贴进去；
+- 找到“Keil5”注册机，右击管理员身份打开，将复制好的CID粘贴进去；
 - 确保注册机中的``Target``选为'ARM'，点击``Generate``生成激活码，复制它；
 - 回到``Keil uVision5``软件，将刚刚复制好的激活码粘贴，点击``Add LIC``，完成激活。（记得恢复杀毒软件）
 
@@ -74,7 +80,7 @@
 
 ### 安装 J-Link/ST-Link 驱动
 
-根据所购买开发板选择安装J-Link还是ST-Link。
+根据所购买开发板**选择安装J-Link还是ST-Link**。
 
 - J-Link安装方法：
     - 进入官网下载：[https://www.segger.com/downloads/jlink/JLink_Windows_beta.exe](https://www.segger.com/downloads/jlink/JLink_Windows_beta.exe)；
@@ -117,11 +123,11 @@ USER/
 
 基于库函数开发，需要首先[下载固件库](#第-4-步下载固件库)。
 
-- 复制库文件：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/STM32F10x_StdPeriph_Driver/"，复制其中的``/inc``和``/src``两个文件夹，然后回到项目根目录下的``/STM32F10x_FWLIB``文件夹下，鼠标右击粘贴至此；
-- 复制核心文件：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/CMSIS/CM3/CoreSupport/"，复制其中的``core_cm3.c``和``core_cm3.h``两个文件夹，然后回到项目根目录下的``/CORE``文件夹下，鼠标右击粘贴至此；
-- 复制启动文件：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/arm/"，复制其中的``startup_stm32f10x_hd.s``（表示大容量，要根据具体型号选择对应的启动文件，[参考该链接](https://blog.csdn.net/AUST_xiaocizhen/article/details/136309026)）启动文件，然后回到项目根目录下的``/CORE``文件夹下，鼠标右击粘贴至此；
-- 复制主目录文件：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/"，复制其中的``stm32f10x.h``, ``system_stm32f10x.c``和``system_stm32f10x.h``三个文件，然后回到项目根目录下的``/USER``文件夹下，鼠标右击粘贴至此；
-- 找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Project/STM32F10x_StdPeriph_Template/"，复制其中的``main.c``, ``stm32f10x_conf.h``, ``stm32f10x_it.c``, ``stm32f10x_it.h``四个文件，然后回到项目根目录下的``/USER``文件夹下，鼠标右击粘贴至此。
+- **复制库文件**：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/STM32F10x_StdPeriph_Driver/"，复制其中的``/inc``和``/src``两个文件夹，然后回到项目根目录下的``/STM32F10x_FWLIB``文件夹下，鼠标右击粘贴至此；
+- **复制核心文件**：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/CMSIS/CM3/CoreSupport/"，复制其中的``core_cm3.c``和``core_cm3.h``两个文件夹，然后回到项目根目录下的``/CORE``文件夹下，鼠标右击粘贴至此；
+- **复制启动文件**：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/arm/"，复制其中的``startup_stm32f10x_hd.s``（表示大容量，要根据具体型号选择对应的启动文件，[参考该链接](https://blog.csdn.net/AUST_xiaocizhen/article/details/136309026)）启动文件，然后回到项目根目录下的``/CORE``文件夹下，鼠标右击粘贴至此；
+- **复制主目录文件**：找到固件库目录："STM32F10x_StdPeriph_Lib_v3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/"，复制其中的``stm32f10x.h``, ``system_stm32f10x.c``和``system_stm32f10x.h``三个文件，然后回到项目根目录下的``/USER``文件夹下，鼠标右击粘贴至此；
+- **找到固件库目录**："STM32F10x_StdPeriph_Lib_v3.5.0/Project/STM32F10x_StdPeriph_Template/"，复制其中的``main.c``, ``stm32f10x_conf.h``, ``stm32f10x_it.c``, ``stm32f10x_it.h``四个文件，然后回到项目根目录下的``/USER``文件夹下，鼠标右击粘贴至此。
 
 至此，新建工程所需的所有文件就都复制到项目根目录下了。
 
