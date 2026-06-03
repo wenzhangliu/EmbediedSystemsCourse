@@ -107,16 +107,15 @@ USART支持多种停止位的配置：
 
 初始化示例：
 ```c
-USART_InitTypeDef usart_init = {
-.USART_BaudRate = 9600,  // 波特率
-.USART_WordLength = USART_WorldLength_8b,  //数据位8位
-.USART_StopBits = USART_StopBits_1,  //1位停止位
-.USART_Parity = USART_Parity_No,  //无奇偶校验
-.USART_HardwareFlowControl = USART_HardwareFlowControl_None,  //无硬件流
-.USART_Mode = USART_Mode_Rx | USART_Mode_Tx,  //发送接收模式
-};
-.USART_Init(USART1, &usart_init);
-.USART_Cmd(USART1, ENABLE);
+USART_InitTypeDef usart_init;
+usart_init.USART_BaudRate = 9600;  // 波特率
+usart_init.USART_WordLength = USART_WorldLength_8b;  //数据位8位
+usart_init.USART_StopBits = USART_StopBits_1;  //1位停止位
+usart_init.USART_Parity = USART_Parity_No;  //无奇偶校验
+usart_init.USART_HardwareFlowControl = USART_HardwareFlowControl_None;  //无硬件流
+usart_init.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;  //发送接收模式
+USART_Init(USART1, &usart_init);
+USART_Cmd(USART1, ENABLE);
 ```
 
 ## USART操作
